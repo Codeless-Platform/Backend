@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "atooofs",
+  "info": {
+    "singularName": "atooof",
+    "pluralName": "atooofs",
+    "displayName": "atooof"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "password": {
+      "type": "password"
+    }
+  }
+}

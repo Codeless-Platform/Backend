@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "mangaas",
+  "info": {
+    "singularName": "mangaa",
+    "pluralName": "mangaas",
+    "displayName": "mangaa"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "type": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "abodyyys",
+  "info": {
+    "singularName": "abodyyy",
+    "pluralName": "abodyyys",
+    "displayName": "abodyyy"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "bodbod": {
+      "type": "string"
+    }
+  }
+}

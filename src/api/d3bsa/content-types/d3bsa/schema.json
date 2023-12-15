@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "d3bsas",
+  "info": {
+    "singularName": "d3bsa",
+    "pluralName": "d3bsas",
+    "displayName": "d3bsa"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "Description": {
+      "type": "richtext"
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::category.category",
+      "mappedBy": "d_3_bsas"
+    }
+  }
+}
