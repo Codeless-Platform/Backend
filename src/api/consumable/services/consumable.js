@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * d3bsa service
+ * product service
  */
 
 const { createCoreService } = require('@strapi/strapi').factories;
 
-module.exports = createCoreService('api::d3bsa.d3bsa');
+module.exports = createCoreService('api::consumable.consumable');

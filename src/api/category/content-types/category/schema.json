@@ -15,12 +15,6 @@
       "type": "string",
       "required": true,
       "unique": true
-    },
-    "d_3_bsas": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::d3bsa.d3bsa",
-      "inversedBy": "categories"
     }
   }
 }

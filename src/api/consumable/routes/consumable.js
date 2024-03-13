@@ -1,10 +1,9 @@
 'use strict';
 
 /**
- * d3bsa router
+ * product router
  */
 
 const { createCoreRouter } = require('@strapi/strapi').factories;
 
-module.exports = createCoreRouter('api::d3bsa.d3bsa');
-
+module.exports = createCoreRouter('api::consumable.consumable');

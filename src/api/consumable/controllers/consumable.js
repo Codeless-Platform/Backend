@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * d3bsa controller
+ * product controller
  */
 
 const { createCoreController } = require('@strapi/strapi').factories;
 
-module.exports = createCoreController('api::d3bsa.d3bsa');
+module.exports = createCoreController('api::consumable.consumable');

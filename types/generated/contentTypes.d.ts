@@ -784,6 +784,7 @@ export interface ApiBevergeBeverge extends Schema.CollectionType {
     beverge_name: Attribute.String;
     price: Attribute.Integer;
     description: Attribute.Text;
+    final: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -837,11 +838,6 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   };
   attributes: {
     Name: Attribute.String & Attribute.Required & Attribute.Unique;
-    d_3_bsas: Attribute.Relation<
-      'api::category.category',
-      'manyToMany',
-      'api::d3bsa.d3bsa'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -860,35 +856,32 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   };
 }
 
-export interface ApiD3BsaD3Bsa extends Schema.CollectionType {
-  collectionName: 'd3bsas';
+export interface ApiConsumableConsumable extends Schema.CollectionType {
+  collectionName: 'consumables';
   info: {
-    singularName: 'd3bsa';
-    pluralName: 'd3bsas';
-    displayName: 'd3bsa';
+    singularName: 'consumable';
+    pluralName: 'consumables';
+    displayName: 'Consumable';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    Name: Attribute.String & Attribute.Required & Attribute.Unique;
-    Description: Attribute.RichText;
-    categories: Attribute.Relation<
-      'api::d3bsa.d3bsa',
-      'manyToMany',
-      'api::category.category'
-    >;
+    product_name: Attribute.String;
+    price: Attribute.Integer;
+    description: Attribute.Text;
+    final: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::d3bsa.d3bsa',
+      'api::consumable.consumable',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::d3bsa.d3bsa',
+      'api::consumable.consumable',
       'oneToOne',
       'admin::user'
     > &
@@ -980,7 +973,7 @@ declare module '@strapi/types' {
       'api::beverge.beverge': ApiBevergeBeverge;
       'api::bio.bio': ApiBioBio;
       'api::category.category': ApiCategoryCategory;
-      'api::d3bsa.d3bsa': ApiD3BsaD3Bsa;
+      'api::consumable.consumable': ApiConsumableConsumable;
       'api::mangaa.mangaa': ApiMangaaMangaa;
       'api::product.product': ApiProductProduct;
     }

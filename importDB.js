@@ -10,6 +10,7 @@ if (!host || !user || !database || !port || !tableName) {
     process.exit(1);
 }
 
+console.log(`${tableName}`)
 const mysqlConnection = mysql.createConnection({
     host: host,
     user: user,
@@ -58,5 +59,8 @@ function transferData() {
         sqliteDB.close();
     });
 }
+
+
+
 
 transferData();

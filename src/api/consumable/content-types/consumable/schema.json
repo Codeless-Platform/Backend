@@ -1,17 +1,17 @@
 {
   "kind": "collectionType",
-  "collectionName": "beverges",
+  "collectionName": "consumables",
   "info": {
-    "singularName": "beverge",
-    "pluralName": "beverges",
-    "displayName": "Beverge"
+    "singularName": "consumable",
+    "pluralName": "consumables",
+    "displayName": "Consumable"
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "beverge_name": {
+    "product_name": {
       "type": "string"
     },
     "price": {
@@ -20,7 +20,8 @@
     "description": {
       "type": "text"
     },
-    "final":{
+    "final":
+    {
       "type": "text"
     }
   }

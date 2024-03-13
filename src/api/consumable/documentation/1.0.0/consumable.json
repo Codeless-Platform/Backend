@@ -1,5 +1,5 @@
 {
-  "/d3bsas": {
+  "/consumables": {
     "get": {
       "responses": {
         "200": {
@@ -7,7 +7,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/D3BsaListResponse"
+                "$ref": "#/components/schemas/ConsumableListResponse"
               }
             }
           }
@@ -64,7 +64,7 @@
         }
       },
       "tags": [
-        "D3bsa"
+        "Consumable"
       ],
       "parameters": [
         {
@@ -169,7 +169,7 @@
           }
         }
       ],
-      "operationId": "get/d3bsas"
+      "operationId": "get/consumables"
     },
     "post": {
       "responses": {
@@ -178,7 +178,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/D3BsaResponse"
+                "$ref": "#/components/schemas/ConsumableResponse"
               }
             }
           }
@@ -235,23 +235,23 @@
         }
       },
       "tags": [
-        "D3bsa"
+        "Consumable"
       ],
       "parameters": [],
-      "operationId": "post/d3bsas",
+      "operationId": "post/consumables",
       "requestBody": {
         "required": true,
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/D3BsaRequest"
+              "$ref": "#/components/schemas/ConsumableRequest"
             }
           }
         }
       }
     }
   },
-  "/d3bsas/{id}": {
+  "/consumables/{id}": {
     "get": {
       "responses": {
         "200": {
@@ -259,7 +259,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/D3BsaResponse"
+                "$ref": "#/components/schemas/ConsumableResponse"
               }
             }
           }
@@ -316,7 +316,7 @@
         }
       },
       "tags": [
-        "D3bsa"
+        "Consumable"
       ],
       "parameters": [
         {
@@ -330,7 +330,7 @@
           }
         }
       ],
-      "operationId": "get/d3bsas/{id}"
+      "operationId": "get/consumables/{id}"
     },
     "put": {
       "responses": {
@@ -339,7 +339,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/D3BsaResponse"
+                "$ref": "#/components/schemas/ConsumableResponse"
               }
             }
           }
@@ -396,7 +396,7 @@
         }
       },
       "tags": [
-        "D3bsa"
+        "Consumable"
       ],
       "parameters": [
         {
@@ -410,13 +410,13 @@
           }
         }
       ],
-      "operationId": "put/d3bsas/{id}",
+      "operationId": "put/consumables/{id}",
       "requestBody": {
         "required": true,
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/D3BsaRequest"
+              "$ref": "#/components/schemas/ConsumableRequest"
             }
           }
         }
@@ -487,7 +487,7 @@
         }
       },
       "tags": [
-        "D3bsa"
+        "Consumable"
       ],
       "parameters": [
         {
@@ -501,7 +501,7 @@
           }
         }
       ],
-      "operationId": "delete/d3bsas/{id}"
+      "operationId": "delete/consumables/{id}"
     }
   }
 }
