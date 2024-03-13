@@ -62,7 +62,12 @@ function transferData() {
 
 
 function createContentType(){
-    
+    // create file "tablename" inside src/api 
+    // create file content-type, inside create file "tablename"
+    // create file schema.json
+    // read file template/schema.json 
+    // replace TEMPLATE tablename
+    // ...
 }
 
 
