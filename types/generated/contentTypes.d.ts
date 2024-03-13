@@ -770,6 +770,38 @@ export interface ApiAuthonticationAuthontication extends Schema.CollectionType {
   };
 }
 
+export interface ApiBevergeBeverge extends Schema.CollectionType {
+  collectionName: 'beverges';
+  info: {
+    singularName: 'beverge';
+    pluralName: 'beverges';
+    displayName: 'Beverge';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    beverge_name: Attribute.String;
+    price: Attribute.Integer;
+    description: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::beverge.beverge',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::beverge.beverge',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiBioBio extends Schema.CollectionType {
   collectionName: 'bios';
   info: {
@@ -894,6 +926,38 @@ export interface ApiMangaaMangaa extends Schema.CollectionType {
   };
 }
 
+export interface ApiProductProduct extends Schema.CollectionType {
+  collectionName: 'products';
+  info: {
+    singularName: 'product';
+    pluralName: 'products';
+    displayName: 'Product';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    product_name: Attribute.String;
+    price: Attribute.Integer;
+    description: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::product.product',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::product.product',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -913,10 +977,12 @@ declare module '@strapi/types' {
       'api::abodyyy.abodyyy': ApiAbodyyyAbodyyy;
       'api::atooof.atooof': ApiAtooofAtooof;
       'api::authontication.authontication': ApiAuthonticationAuthontication;
+      'api::beverge.beverge': ApiBevergeBeverge;
       'api::bio.bio': ApiBioBio;
       'api::category.category': ApiCategoryCategory;
       'api::d3bsa.d3bsa': ApiD3BsaD3Bsa;
       'api::mangaa.mangaa': ApiMangaaMangaa;
+      'api::product.product': ApiProductProduct;
     }
   }
 }

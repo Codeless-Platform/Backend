@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "beverges",
+  "info": {
+    "singularName": "beverge",
+    "pluralName": "beverges",
+    "displayName": "Beverge"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "beverge_name": {
+      "type": "string"
+    },
+    "price": {
+      "type": "integer"
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}
