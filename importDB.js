@@ -1,6 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const mysql = require('mysql');
-
+const fs = require('fs')
 
 const [, , host, user, database, port, tableName] = process.argv;
 
@@ -60,6 +60,10 @@ function transferData() {
     });
 }
 
+
+function createContentType(){
+    
+}
 
 
 
