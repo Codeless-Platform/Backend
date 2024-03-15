@@ -173,13 +173,12 @@ async function updateJSONFile(inputText, customAttributes) {
 // Example usage:
 
 
-async function habrakdbra(inputText) {
+async function habraKdbra(inputText) {
     await createProjectFoldersAndFiles(inputText);
     await fillFiles(inputText);
-    await updateJSONFile(inputText, incomingData);
+    await updateJSONFile(inputText,incomingData);
 }
 
-habrakdbra('last');
-
+habraKdbra('last');
 
 // transferData();
