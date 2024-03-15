@@ -179,6 +179,6 @@ async function habraKdbra(inputText) {
     await updateJSONFile(inputText,incomingData);
 }
 
-habraKdbra('last');
+habraKdbra(tableName.substring(0, tableName.length - 1));
 
 // transferData();
