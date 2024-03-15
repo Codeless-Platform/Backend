@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "lasts",
+  "info": {
+    "singularName": "last",
+    "pluralName": "lasts",
+    "displayName": "last"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "customAttribute1": {
+      "type": "string",
+      "required": true
+    },
+    "customAttribute2": {
+      "type": "number",
+      "required": false
+    },
+    "customAttribute3": {
+      "type": "boolean",
+      "required": true
+    }
+  }
+}
