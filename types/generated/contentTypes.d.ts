@@ -919,6 +919,65 @@ export interface ApiMangaaMangaa extends Schema.CollectionType {
   };
 }
 
+<<<<<<< HEAD
+=======
+export interface ApiMooMoo extends Schema.CollectionType {
+  collectionName: 'moos';
+  info: {
+    singularName: 'moo';
+    pluralName: 'moos';
+    displayName: 'moo';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    customAttribute1: Attribute.String & Attribute.Required;
+    customAttribute2: Attribute.Integer;
+    customAttribute3: Attribute.Boolean & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::moo.moo', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::moo.moo', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiProductProduct extends Schema.CollectionType {
+  collectionName: 'products';
+  info: {
+    singularName: 'product';
+    pluralName: 'products';
+    displayName: 'Product';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    product_name: Attribute.String;
+    price: Attribute.Integer;
+    description: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::product.product',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::product.product',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+>>>>>>> 04b5673 (to pull)
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -943,6 +1002,11 @@ declare module '@strapi/types' {
       'api::category.category': ApiCategoryCategory;
       'api::consumable.consumable': ApiConsumableConsumable;
       'api::mangaa.mangaa': ApiMangaaMangaa;
+<<<<<<< HEAD
+=======
+      'api::moo.moo': ApiMooMoo;
+      'api::product.product': ApiProductProduct;
+>>>>>>> 04b5673 (to pull)
     }
   }
 }

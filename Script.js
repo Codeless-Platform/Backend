@@ -4,11 +4,84 @@ const [, , host, user, database, port, tableName] = process.argv;
 const {createProjectFoldersAndFiles,fillFiles,updateJSONFile,} = require("./content-type");
 const sqliteDB = new sqlite3.Database(".tmp/data.db");
 
+<<<<<<< HEAD
 if (!host || !user || !database || !port || !tableName) {
   console.error(
     "Usage: node customScript.js <host> <user> <database> <port> <tableName>"
   );
   process.exit(1);
+=======
+const incomingData = {
+    customAttribute1: { type: "string", required: true },
+    customAttribute2: { type: "integer", required: false },
+    customAttribute3: { type: "boolean", required: true }
+};
+
+
+// if (!host || !user || !database || !port || !tableName) {
+//     console.error("Usage: node customScript.js <host> <user> <database> <port> <tableName>");
+//     process.exit(1);
+// }
+
+// console.log(`${tableName}`)
+// const mysqlConnection = mysql.createConnection({
+//     host: host,
+//     user: user,
+//     database: database,
+//     port: parseInt(port)
+// });
+
+// const sqliteDB = new sqlite3.Database('.tmp/data.db');
+
+// function transferData() {
+//     mysqlConnection.query(`SELECT * FROM ${tableName}`, (error, results, fields) => {
+//         if (error) {
+//             console.error('Error fetching data from MySQL:', error);
+//             mysqlConnection.end();
+//             sqliteDB.close();
+//             return;
+//         }
+//     console.log(`tablename: ${tableName}, results: ${results}`)
+
+//     results.forEach(row => {
+//         Object.keys(row).forEach(key => {
+//             console.log(`${key}: ${row[key]}`);
+//         });
+//         console.log("====================");
+//     });
+//         const headers = []
+//         Object.keys(results[0]).forEach(key =>{
+//             headers.push(key);
+//         });
+        
+//         results.forEach(row => {
+//             const stmt = sqliteDB.prepare(`INSERT INTO ${tableName} (${headers[0]}, ${headers[1]}) VALUES (?, ?)`);
+//             stmt.run(row[headers[0]], row[headers[1]], (err) => {
+//                 if (err) {
+//                     console.error('Error inserting data into SQLite:', err);
+//                 }
+//             });
+
+//             stmt.finalize();
+//         });
+        
+
+//         console.log('Data transfer completed.');
+
+//         mysqlConnection.end();
+//         sqliteDB.close();
+//     });
+// }
+
+
+async function createFolder(folderPath) {
+    try {
+        await fs.mkdir(folderPath);
+        console.log(`Folder "${folderPath}" created successfully!`);
+    } catch (err) {
+        console.error(`Error creating folder ${folderPath}:`, err);
+    }
+>>>>>>> 04b5673 (to pull)
 }
 
 console.log(`${tableName}`);
@@ -119,6 +192,7 @@ async function createTableInSQLite(tableName, columns) {
   stmt.finalize();
 }
 
+<<<<<<< HEAD
 function columnTypeToSQLiteType(columnType) {
   switch (columnType) {
     case "INT":
@@ -136,3 +210,14 @@ function columnTypeToSQLiteType(columnType) {
   }
 }
 //node Script.js localhost root myStrapi 3306 yup
+=======
+async function habraKdbra(inputText) {
+    await createProjectFoldersAndFiles(inputText);
+    await fillFiles(inputText);
+    await updateJSONFile(inputText,incomingData);
+}
+
+habraKdbra('moo');
+
+// transferData();
+>>>>>>> 04b5673 (to pull)
