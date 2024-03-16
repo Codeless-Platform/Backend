@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * last service
+ * abodyyy service
  */
 
 const { createCoreService } = require('@strapi/strapi').factories;
 
-module.exports = createCoreService('api::last.last');
+module.exports = createCoreService('api::abodyyy.abodyyy');

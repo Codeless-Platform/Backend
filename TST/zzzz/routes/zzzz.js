@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * last router
+ * zzzz router
  */
 
 const { createCoreRouter } = require('@strapi/strapi').factories;
 
-module.exports = createCoreRouter('api::last.last');
+module.exports = createCoreRouter('api::zzzz.zzzz');

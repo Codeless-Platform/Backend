@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * last controller
+ * abodyyy controller
  */
 
 const { createCoreController } = require('@strapi/strapi').factories;
 
-module.exports = createCoreController('api::last.last');
+module.exports = createCoreController('api::abodyyy.abodyyy');

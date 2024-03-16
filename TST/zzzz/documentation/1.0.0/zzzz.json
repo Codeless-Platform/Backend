@@ -1,5 +1,5 @@
 {
-  "/products": {
+  "/zzzzs": {
     "get": {
       "responses": {
         "200": {
@@ -7,7 +7,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProductListResponse"
+                "$ref": "#/components/schemas/ZzzzListResponse"
               }
             }
           }
@@ -64,7 +64,7 @@
         }
       },
       "tags": [
-        "Product"
+        "Zzzz"
       ],
       "parameters": [
         {
@@ -169,7 +169,7 @@
           }
         }
       ],
-      "operationId": "get/products"
+      "operationId": "get/zzzzs"
     },
     "post": {
       "responses": {
@@ -178,7 +178,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProductResponse"
+                "$ref": "#/components/schemas/ZzzzResponse"
               }
             }
           }
@@ -235,23 +235,23 @@
         }
       },
       "tags": [
-        "Product"
+        "Zzzz"
       ],
       "parameters": [],
-      "operationId": "post/products",
+      "operationId": "post/zzzzs",
       "requestBody": {
         "required": true,
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/ProductRequest"
+              "$ref": "#/components/schemas/ZzzzRequest"
             }
           }
         }
       }
     }
   },
-  "/products/{id}": {
+  "/zzzzs/{id}": {
     "get": {
       "responses": {
         "200": {
@@ -259,7 +259,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProductResponse"
+                "$ref": "#/components/schemas/ZzzzResponse"
               }
             }
           }
@@ -316,7 +316,7 @@
         }
       },
       "tags": [
-        "Product"
+        "Zzzz"
       ],
       "parameters": [
         {
@@ -330,7 +330,7 @@
           }
         }
       ],
-      "operationId": "get/products/{id}"
+      "operationId": "get/zzzzs/{id}"
     },
     "put": {
       "responses": {
@@ -339,7 +339,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProductResponse"
+                "$ref": "#/components/schemas/ZzzzResponse"
               }
             }
           }
@@ -396,7 +396,7 @@
         }
       },
       "tags": [
-        "Product"
+        "Zzzz"
       ],
       "parameters": [
         {
@@ -410,13 +410,13 @@
           }
         }
       ],
-      "operationId": "put/products/{id}",
+      "operationId": "put/zzzzs/{id}",
       "requestBody": {
         "required": true,
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/ProductRequest"
+              "$ref": "#/components/schemas/ZzzzRequest"
             }
           }
         }
@@ -487,7 +487,7 @@
         }
       },
       "tags": [
-        "Product"
+        "Zzzz"
       ],
       "parameters": [
         {
@@ -501,7 +501,7 @@
           }
         }
       ],
-      "operationId": "delete/products/{id}"
+      "operationId": "delete/zzzzs/{id}"
     }
   }
 }
