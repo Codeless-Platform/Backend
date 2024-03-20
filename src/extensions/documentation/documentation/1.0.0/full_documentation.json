@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-03-20T05:52:46.023Z"
+    "x-generation-date": "2024-03-20T22:51:16.010Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -93,10 +93,21 @@
         ],
         "properties": {
           "data": {
+            "required": [
+              "idabodyyy",
+              "abodyyycol",
+              "abodyyycol1"
+            ],
             "type": "object",
             "properties": {
-              "bodbod": {
+              "idabodyyy": {
+                "type": "integer"
+              },
+              "abodyyycol": {
                 "type": "string"
+              },
+              "abodyyycol1": {
+                "type": "integer"
               }
             }
           }
@@ -150,9 +161,20 @@
       },
       "Abodyyy": {
         "type": "object",
+        "required": [
+          "idabodyyy",
+          "abodyyycol",
+          "abodyyycol1"
+        ],
         "properties": {
-          "bodbod": {
+          "idabodyyy": {
+            "type": "integer"
+          },
+          "abodyyycol": {
             "type": "string"
+          },
+          "abodyyycol1": {
+            "type": "integer"
           },
           "createdAt": {
             "type": "string",
@@ -3286,7 +3308,7 @@
           }
         }
       },
-      "MmmmmmmmmRequest": {
+      "ProductRequest": {
         "type": "object",
         "required": [
           "data"
@@ -3294,43 +3316,47 @@
         "properties": {
           "data": {
             "required": [
-              "iid",
               "name",
-              "age"
+              "price",
+              "description",
+              "final"
             ],
             "type": "object",
             "properties": {
-              "iid": {
-                "type": "integer"
-              },
               "name": {
                 "type": "string"
               },
-              "age": {
+              "price": {
+                "type": "integer"
+              },
+              "description": {
+                "type": "integer"
+              },
+              "final": {
                 "type": "integer"
               }
             }
           }
         }
       },
-      "MmmmmmmmmListResponseDataItem": {
+      "ProductListResponseDataItem": {
         "type": "object",
         "properties": {
           "id": {
             "type": "number"
           },
           "attributes": {
-            "$ref": "#/components/schemas/Mmmmmmmmm"
+            "$ref": "#/components/schemas/Product"
           }
         }
       },
-      "MmmmmmmmmListResponse": {
+      "ProductListResponse": {
         "type": "object",
         "properties": {
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MmmmmmmmmListResponseDataItem"
+              "$ref": "#/components/schemas/ProductListResponseDataItem"
             }
           },
           "meta": {
@@ -3359,21 +3385,25 @@
           }
         }
       },
-      "Mmmmmmmmm": {
+      "Product": {
         "type": "object",
         "required": [
-          "iid",
           "name",
-          "age"
+          "price",
+          "description",
+          "final"
         ],
         "properties": {
-          "iid": {
-            "type": "integer"
-          },
           "name": {
             "type": "string"
           },
-          "age": {
+          "price": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "integer"
+          },
+          "final": {
             "type": "integer"
           },
           "createdAt": {
@@ -3676,22 +3706,22 @@
           }
         }
       },
-      "MmmmmmmmmResponseDataObject": {
+      "ProductResponseDataObject": {
         "type": "object",
         "properties": {
           "id": {
             "type": "number"
           },
           "attributes": {
-            "$ref": "#/components/schemas/Mmmmmmmmm"
+            "$ref": "#/components/schemas/Product"
           }
         }
       },
-      "MmmmmmmmmResponse": {
+      "ProductResponse": {
         "type": "object",
         "properties": {
           "data": {
-            "$ref": "#/components/schemas/MmmmmmmmmResponseDataObject"
+            "$ref": "#/components/schemas/ProductResponseDataObject"
           },
           "meta": {
             "type": "object"
@@ -7946,7 +7976,7 @@
         "operationId": "delete/mangaas/{id}"
       }
     },
-    "/mmmmmmmmms": {
+    "/products": {
       "get": {
         "responses": {
           "200": {
@@ -7954,7 +7984,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MmmmmmmmmListResponse"
+                  "$ref": "#/components/schemas/ProductListResponse"
                 }
               }
             }
@@ -8011,7 +8041,7 @@
           }
         },
         "tags": [
-          "Mmmmmmmmm"
+          "Product"
         ],
         "parameters": [
           {
@@ -8116,7 +8146,7 @@
             }
           }
         ],
-        "operationId": "get/mmmmmmmmms"
+        "operationId": "get/products"
       },
       "post": {
         "responses": {
@@ -8125,7 +8155,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MmmmmmmmmResponse"
+                  "$ref": "#/components/schemas/ProductResponse"
                 }
               }
             }
@@ -8182,23 +8212,23 @@
           }
         },
         "tags": [
-          "Mmmmmmmmm"
+          "Product"
         ],
         "parameters": [],
-        "operationId": "post/mmmmmmmmms",
+        "operationId": "post/products",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MmmmmmmmmRequest"
+                "$ref": "#/components/schemas/ProductRequest"
               }
             }
           }
         }
       }
     },
-    "/mmmmmmmmms/{id}": {
+    "/products/{id}": {
       "get": {
         "responses": {
           "200": {
@@ -8206,7 +8236,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MmmmmmmmmResponse"
+                  "$ref": "#/components/schemas/ProductResponse"
                 }
               }
             }
@@ -8263,7 +8293,7 @@
           }
         },
         "tags": [
-          "Mmmmmmmmm"
+          "Product"
         ],
         "parameters": [
           {
@@ -8277,7 +8307,7 @@
             }
           }
         ],
-        "operationId": "get/mmmmmmmmms/{id}"
+        "operationId": "get/products/{id}"
       },
       "put": {
         "responses": {
@@ -8286,7 +8316,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MmmmmmmmmResponse"
+                  "$ref": "#/components/schemas/ProductResponse"
                 }
               }
             }
@@ -8343,7 +8373,7 @@
           }
         },
         "tags": [
-          "Mmmmmmmmm"
+          "Product"
         ],
         "parameters": [
           {
@@ -8357,13 +8387,13 @@
             }
           }
         ],
-        "operationId": "put/mmmmmmmmms/{id}",
+        "operationId": "put/products/{id}",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MmmmmmmmmRequest"
+                "$ref": "#/components/schemas/ProductRequest"
               }
             }
           }
@@ -8434,7 +8464,7 @@
           }
         },
         "tags": [
-          "Mmmmmmmmm"
+          "Product"
         ],
         "parameters": [
           {
@@ -8448,7 +8478,7 @@
             }
           }
         ],
-        "operationId": "delete/mmmmmmmmms/{id}"
+        "operationId": "delete/products/{id}"
       }
     },
     "/upload": {

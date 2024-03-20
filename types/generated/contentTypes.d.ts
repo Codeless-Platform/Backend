@@ -688,7 +688,9 @@ export interface ApiAbodyyyAbodyyy extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    bodbod: Attribute.String;
+    idabodyyy: Attribute.Integer & Attribute.Required;
+    abodyyycol: Attribute.Text & Attribute.Required;
+    abodyyycol1: Attribute.Integer & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -919,31 +921,32 @@ export interface ApiMangaaMangaa extends Schema.CollectionType {
   };
 }
 
-export interface ApiMmmmmmmmmMmmmmmmmm extends Schema.CollectionType {
-  collectionName: 'mmmmmmmmms';
+export interface ApiProductProduct extends Schema.CollectionType {
+  collectionName: 'products';
   info: {
-    singularName: 'mmmmmmmmm';
-    pluralName: 'mmmmmmmmms';
-    displayName: 'mmmmmmmmm';
+    singularName: 'product';
+    pluralName: 'products';
+    displayName: 'product';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    iid: Attribute.Integer & Attribute.Required;
     name: Attribute.Text & Attribute.Required;
-    age: Attribute.Integer & Attribute.Required;
+    price: Attribute.Integer & Attribute.Required;
+    description: Attribute.Integer & Attribute.Required;
+    final: Attribute.Integer & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::mmmmmmmmm.mmmmmmmmm',
+      'api::product.product',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::mmmmmmmmm.mmmmmmmmm',
+      'api::product.product',
       'oneToOne',
       'admin::user'
     > &
@@ -975,7 +978,7 @@ declare module '@strapi/types' {
       'api::category.category': ApiCategoryCategory;
       'api::consumable.consumable': ApiConsumableConsumable;
       'api::mangaa.mangaa': ApiMangaaMangaa;
-      'api::mmmmmmmmm.mmmmmmmmm': ApiMmmmmmmmmMmmmmmmmm;
+      'api::product.product': ApiProductProduct;
     }
   }
 }

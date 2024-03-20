@@ -66,26 +66,43 @@ async function selectQuery() {
 async function fillStrapiTable(dataRows) {
   const headers = Object.keys(dataRows[0]); // Assuming dataRows is an array of objects
 
+  // Array to hold all promises for insertions
+  const insertPromises = [];
+
   for (const row of dataRows) {
-    console.log("Inserting row:", row); // Debugging statement
+      console.log("Inserting row:", row); // Debugging statement
 
-    const sqlStatement = `INSERT INTO ${tableName}s (${headers.join(", ")}) VALUES (${headers.map(() => '?').join(', ')})`;
-    console.log("SQL Statement:", sqlStatement); // Debugging statement
+      const sqlStatement = `INSERT INTO ${tableName}s (${headers.join(", ")}) VALUES (${headers.map(() => '?').join(', ')})`;
+      console.log("SQL Statement:", sqlStatement); // Debugging statement
 
-    const stmt = sqliteDB.prepare(sqlStatement);
-    console.log("Prepared Statement:", stmt.sql); // Debugging statement
-    stmt.run(headers.map(header => row[header]) , (err) => {
-      if (err) {
-        console.error("Error inserting data into SQLite:", err);
-      } else {
-        console.log("Row inserted successfully."); // Debugging statement
-      }
-    });
+      const stmt = sqliteDB.prepare(sqlStatement);
+      console.log("Prepared Statement:", stmt.sql); // Debugging statement
 
-    stmt.finalize();
+      // Create a promise for the insertion
+      const insertionPromise = new Promise((resolve, reject) => {
+          stmt.run(headers.map(header => row[header]), (err) => {
+              if (err) {
+                  console.error("Error inserting data into SQLite:", err);
+                  reject(err); // Reject the promise if there's an error
+              } else {
+                  console.log("Row inserted successfully."); // Debugging statement
+                  resolve(); // Resolve the promise if insertion is successful
+              }
+          });
+          stmt.finalize();
+      });
+
+      // Push the insertion promise to the array
+      insertPromises.push(insertionPromise);
   }
 
-  console.log("Data transfer to SQLite completed."); // Debugging statement
+  // Wait for all insertions to complete
+  try {
+      await Promise.all(insertPromises);
+      console.log("Data transfer to SQLite completed."); // Debugging statement
+  } catch (error) {
+      console.error("Error in fillStrapiTable:", error);
+  }
 }
 
 
