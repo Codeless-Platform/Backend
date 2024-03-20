@@ -49,61 +49,48 @@ async function getTableSchema(tableName) {
 }
 
 
-async function selectQuery() {
-  return new Promise((resolve, reject) => {
-    mysqlConnection.query(`SELECT * FROM ${tableName}`, (error, results, fields) => {
-      if (error) {
-        console.error("Error fetching data from MySQL:", error);
-        reject(error);
-      } else{
-        resolve(results);
-      }
-      
-    });
+
+async function transferData() {
+
+  // Select query to get data from external database
+  const results = await new Promise((resolve, reject) => {
+      mysqlConnection.query(`SELECT * FROM ${tableName}`, (error, results, fields) => {
+          if (error) {
+              console.error("Error fetching data from MySQL:", error);
+              reject(error);
+          } else {
+              resolve(results);
+          }
+      });
   });
-}
 
-async function fillStrapiTable(dataRows) {
-  const headers = Object.keys(dataRows[0]); // Assuming dataRows is an array of objects
+  // Inserting extracted data into strapi database
+  for (const row of results) {
+      debug("Inserting row:", row);
 
-  // Array to hold all promises for insertions
-  const insertPromises = [];
-
-  for (const row of dataRows) {
-      console.log("Inserting row:", row); // Debugging statement
-
+      const headers = Object.keys(row);
       const sqlStatement = `INSERT INTO ${tableName}s (${headers.join(", ")}) VALUES (${headers.map(() => '?').join(', ')})`;
-      console.log("SQL Statement:", sqlStatement); // Debugging statement
+      debug("SQL Statement:", sqlStatement);
 
       const stmt = sqliteDB.prepare(sqlStatement);
-      console.log("Prepared Statement:", stmt.sql); // Debugging statement
+      debug("Prepared Statement:", stmt.sql);
 
-      // Create a promise for the insertion
-      const insertionPromise = new Promise((resolve, reject) => {
+      await new Promise((resolve, reject) => {
           stmt.run(headers.map(header => row[header]), (err) => {
               if (err) {
                   console.error("Error inserting data into SQLite:", err);
-                  reject(err); // Reject the promise if there's an error
+                  reject(err);
               } else {
-                  console.log("Row inserted successfully."); // Debugging statement
-                  resolve(); // Resolve the promise if insertion is successful
+                  resolve();
               }
           });
           stmt.finalize();
       });
-
-      // Push the insertion promise to the array
-      insertPromises.push(insertionPromise);
   }
 
-  // Wait for all insertions to complete
-  try {
-      await Promise.all(insertPromises);
-      console.log("Data transfer to SQLite completed."); // Debugging statement
-  } catch (error) {
-      console.error("Error in fillStrapiTable:", error);
-  }
+  debug("Data transfer to SQLite completed.");
 }
+
 
 
 
@@ -133,8 +120,8 @@ async function createTableInSQLite(tableName, columns) {
   });
   const columnDefinitionString = columnDefinitions.join(", ");
 
-  // DEBUGGING
-  console.log(`CREATE TABLE IF NOT EXISTS ${tableName} (\`id\` integer PRIMARY KEY AUTOINCREMENT NOT NULL, ${columnDefinitionString}, \`created_at\` datetime NULL, \`updated_at\` datetime NULL, \`published_at\` datetime NULL, \`created_by_id\` integer NULL, \`updated_by_id\` integer NULL, CONSTRAINT \`${tableName}s_created_by_id_fk\` FOREIGN KEY (\`created_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}s_updated_by_id_fk\` FOREIGN KEY (\`updated_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}s_created_by_id_fk\` FOREIGN KEY (\`created_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}s_updated_by_id_fk\` FOREIGN KEY (\`updated_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL)`);
+  
+  debug(`CREATE TABLE IF NOT EXISTS ${tableName} (\`id\` integer PRIMARY KEY AUTOINCREMENT NOT NULL, ${columnDefinitionString}, \`created_at\` datetime NULL, \`updated_at\` datetime NULL, \`published_at\` datetime NULL, \`created_by_id\` integer NULL, \`updated_by_id\` integer NULL, CONSTRAINT \`${tableName}s_created_by_id_fk\` FOREIGN KEY (\`created_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}s_updated_by_id_fk\` FOREIGN KEY (\`updated_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}s_created_by_id_fk\` FOREIGN KEY (\`created_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}s_updated_by_id_fk\` FOREIGN KEY (\`updated_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL)`);
 
 
   const stmt = sqliteDB.prepare(
@@ -158,11 +145,13 @@ async function habraKdbra() {
   await createProjectFoldersAndFiles(tableName);
   await fillFiles(tableName);
   await updateJSONFile(tableName, customAttributes);
-  console.log("Invoking Transfer Data");
-  const dataRows = await selectQuery();
-  await fillStrapiTable(dataRows);
+  await transferData();
   process.exit();
 }
 habraKdbra();
 
 //node Script.js localhost root myStrapi 3306 yup
+
+function debug(...msg) {
+  console.log(); console.log("DEBUG:", ...msg); console.log()
+}

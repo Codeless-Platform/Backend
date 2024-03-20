@@ -19,6 +19,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.9.2",
     "pg": "^8.11.3",
+    "promise": "^8.3.0",
     "sqlite3": "^5.1.7",
     "strapi-plugin-import-export-entries": "^1.23.1"
   },
