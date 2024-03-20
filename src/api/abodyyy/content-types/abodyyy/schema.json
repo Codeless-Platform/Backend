@@ -11,8 +11,17 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "bodbod": {
-      "type": "string"
+    "idabodyyy": {
+      "type": "integer",
+      "required": true
+    },
+    "abodyyycol": {
+      "type": "text",
+      "required": true
+    },
+    "abodyyycol1": {
+      "type": "integer",
+      "required": true
     }
   }
 }
