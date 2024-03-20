@@ -805,29 +805,6 @@ export interface ApiBevergeBeverge extends Schema.CollectionType {
   };
 }
 
-export interface ApiBioBio extends Schema.CollectionType {
-  collectionName: 'bios';
-  info: {
-    singularName: 'bio';
-    pluralName: 'bios';
-    displayName: 'bio';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    kml: Attribute.String;
-    mm: Attribute.String & Attribute.Required & Attribute.Unique;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::bio.bio', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::bio.bio', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-  };
-}
-
 export interface ApiCategoryCategory extends Schema.CollectionType {
   collectionName: 'categories';
   info: {
@@ -974,7 +951,6 @@ declare module '@strapi/types' {
       'api::atooof.atooof': ApiAtooofAtooof;
       'api::authontication.authontication': ApiAuthonticationAuthontication;
       'api::beverge.beverge': ApiBevergeBeverge;
-      'api::bio.bio': ApiBioBio;
       'api::category.category': ApiCategoryCategory;
       'api::consumable.consumable': ApiConsumableConsumable;
       'api::mangaa.mangaa': ApiMangaaMangaa;
