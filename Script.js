@@ -1,23 +1,38 @@
 const sqlite3 = require("sqlite3").verbose();
 const mysql = require("mysql");
-const [, , host, user, database, port, tableName] = process.argv;
 const {createProjectFoldersAndFiles,fillFiles,updateJSONFile,} = require("./content-type");
 const sqliteDB = new sqlite3.Database(".tmp/data.db");
 
-if (!host || !user || !database || !port || !tableName) {
-  console.error(
-    "Usage: node customScript.js <host> <user> <database> <port> <tableName>"
-  );
+
+//////////////////------------- fill these dep on your mysql variables -------------/////////////////
+// Read required parameters from environment variables
+const mysqlHost = process.env.MYSQL_HOST || 'localhost';
+const mysqlUser = process.env.MYSQL_USER || 'root';
+const mysqlDatabase = process.env.MYSQL_DATABASE || 'strapi';
+const mysqlPort = process.env.MYSQL_PORT || 3306;
+const tableName = process.env.MYSQL_TABLE_NAME || 'mmmmmmmmm' ;
+const password = process.env.MYSQL_PASSWORD || 'Mohamedlimo236';
+
+// Check if required parameters are provided
+if (!tableName) {
+  console.error("Error: Please provide the table name in the environment variable MYSQL_TABLE_NAME.");
   process.exit(1);
 }
 
-console.log(`${tableName}`);
+// Create MySQL connection
 const mysqlConnection = mysql.createConnection({
-  host: host,
-  user: user,
-  database: database,
-  port: parseInt(port),
+  host: mysqlHost,
+  user: mysqlUser,
+  database: mysqlDatabase,
+  port: parseInt(mysqlPort),
+  password: password,
+  authPlugins: {
+    mysql_clear_password: () => () => Buffer.from(password + '\0')
+  }
 });
+
+// Rest of your script remains the same...
+
 
 async function getTableSchema(tableName) {
   return new Promise((resolve, reject) => {
@@ -84,27 +99,23 @@ async function run() {
   try {
     const tableSchema = await getTableSchema(tableName);
     console.log("Table schema:", tableSchema);
-    await createProjectFoldersAndFiles(tableSchema.tableName);
-    await fillFiles(tableSchema.tableName);
-
+    console.log(`table schema column:`);
     const customAttributes = tableSchema.columns.reduce((acc, column) => {
-      acc[column.name] = { type: column.type, required: true };
-      return acc;
+    acc[column.name] = { type: columnTypeToSQLiteType(column.type), required: true };
+    console.log(`${column.name} ${columnTypeToSQLiteType(column.type)}`)
+    return acc;
     }, {});
-
-    await updateJSONFile(
-      tableSchema.tableName,customAttributes,tableSchema.columns);}
-      catch (err) {
-    console.error("Error in run function:", err);
+    await createTableInSQLite(tableName, tableSchema.columns)
+    return { tableName, customAttributes };
   }
+        catch (err) {
+      console.error("Error in run function:", err);
+    }
 }
-run();
+
 async function createTableInSQLite(tableName, columns) {
   const columnDefinitions = columns.map((column) => {
-    let definition = `${column.name} ${columnTypeToSQLiteType(column.type)}`;
-    if (column.Key === "PRI") {
-      definition += " PRIMARY KEY";
-    }
+    let definition = `\`${column.name}\` ${columnTypeToSQLiteType(column.type)}`;
     if (column.Default) {
       definition += ` DEFAULT ${column.Default}`;
     }
@@ -112,29 +123,33 @@ async function createTableInSQLite(tableName, columns) {
   });
   const columnDefinitionString = columnDefinitions.join(", ");
 
+  // DEBUGGING
+  console.log(`CREATE TABLE IF NOT EXISTS ${tableName} (\`id\` integer PRIMARY KEY AUTOINCREMENT NOT NULL, ${columnDefinitionString}, \`created_at\` datetime NULL, \`updated_at\` datetime NULL, \`published_at\` datetime NULL, \`created_by_id\` integer NULL, \`updated_by_id\` integer NULL, CONSTRAINT \`${tableName}s_created_by_id_fk\` FOREIGN KEY (\`created_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}s_updated_by_id_fk\` FOREIGN KEY (\`updated_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}s_created_by_id_fk\` FOREIGN KEY (\`created_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}s_updated_by_id_fk\` FOREIGN KEY (\`updated_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL)`);
+
+
   const stmt = sqliteDB.prepare(
-    `CREATE TABLE IF NOT EXISTS ${tableName} (${columnDefinitionString})`
+    `CREATE TABLE IF NOT EXISTS ${tableName} (\`id\` integer PRIMARY KEY AUTOINCREMENT NOT NULL, ${columnDefinitionString}, \`created_at\` datetime NULL, \`updated_at\` datetime NULL, \`published_at\` datetime NULL, \`created_by_id\` integer NULL, \`updated_by_id\` integer NULL, CONSTRAINT \`${tableName}_created_by_id_fk\` FOREIGN KEY (\`created_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}_updated_by_id_fk\` FOREIGN KEY (\`updated_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}_created_by_id_fk\` FOREIGN KEY (\`created_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}_updated_by_id_fk\` FOREIGN KEY (\`updated_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL)`
   );
   stmt.run();
   stmt.finalize();
 }
-
 function columnTypeToSQLiteType(columnType) {
-  switch (columnType) {
-    case "INT":
-    case "INT UNSIGNED":
-      return "INTEGER";
-    case "VARCHAR":
-    case "TEXT":
-      return "TEXT";
-    case "DATETIME":
-      return "DATETIME";
-    case "TINYINT":
-      return "INTEGER";
-    default:
-      throw new Error(`Unsupported column type: ${columnType}`);
-  }
+  if (columnType.includes("int")) return "integer";
+  else if (columnType.includes("float") || columnType.includes("double")) return "real";
+  else if (columnType.includes("date") || columnType.includes("time")) return "datetime";
+  else if (columnType.includes("text")) return "text";
+  else if (columnType.includes("blob")) return "blob";
+  else return "text";
 }
+
+
+async function habraKdbra() {
+  const { tableName, customAttributes } = await run();
+  await createProjectFoldersAndFiles(tableName);
+  await fillFiles(tableName);
+  await updateJSONFile(tableName, customAttributes);
+  process.exit();
+}
+habraKdbra()
+
 //node Script.js localhost root myStrapi 3306 yup
-//CREATE TABLE "abodyyys" (`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL, `bodbod` varchar(255) NULL, `created_at` datetime NULL, `updated_at` datetime NULL, `published_at` datetime NULL, `created_by_id` integer NULL, `updated_by_id` integer NULL, CONSTRAINT `abodyyys_created_by_id_fk` FOREIGN KEY (`created_by_id`) REFERENCES `admin_users` (`id`) ON DELETE SET NULL, CONSTRAINT `abodyyys_updated_by_id_fk` FOREIGN KEY (`updated_by_id`) REFERENCES `admin_users` (`id`) ON DELETE SET NULL, CONSTRAINT `abodyyys_created_by_id_fk` FOREIGN KEY (`created_by_id`) REFERENCES `admin_users` (`id`) ON DELETE SET NULL, CONSTRAINT `abodyyys_updated_by_id_fk` FOREIGN KEY (`updated_by_id`) REFERENCES `admin_users` (`id`) ON DELETE SET NULL)
-//CREATE TABLE "whys" (`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL, `hager` text NULL, `tarek` text NULL, `created_at` datetime NULL, `updated_at` datetime NULL, `published_at` datetime NULL, `created_by_id` integer NULL, `updated_by_id` integer NULL, CONSTRAINT `whys_created_by_id_fk` FOREIGN KEY (`created_by_id`) REFERENCES `admin_users` (`id`) ON DELETE SET NULL, CONSTRAINT `whys_updated_by_id_fk` FOREIGN KEY (`updated_by_id`) REFERENCES `admin_users` (`id`) ON DELETE SET NULL, CONSTRAINT `whys_created_by_id_fk` FOREIGN KEY (`created_by_id`) REFERENCES `admin_users` (`id`) ON DELETE SET NULL, CONSTRAINT `whys_updated_by_id_fk` FOREIGN KEY (`updated_by_id`) REFERENCES `admin_users` (`id`) ON DELETE SET NULL)
