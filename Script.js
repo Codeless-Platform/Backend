@@ -8,10 +8,10 @@ const sqliteDB = new sqlite3.Database(".tmp/data.db");
 // Read required parameters from environment variables
 const mysqlHost = process.env.MYSQL_HOST || 'localhost';
 const mysqlUser = process.env.MYSQL_USER || 'root';
-const mysqlDatabase = process.env.MYSQL_DATABASE || 'strapi';
-const mysqlPort = process.env.MYSQL_PORT || 3306;
-const tableName = process.env.MYSQL_TABLE_NAME || 'mmmmmmmmm' ;
-const password = process.env.MYSQL_PASSWORD || 'Mohamedlimo236';
+const mysqlDatabase = process.env.MYSQL_DATABASE || 'myStrapi';
+const mysqlPort = process.env.MYSQL_PORT || '8080';
+const tableName = process.env.MYSQL_TABLE_NAME || 'product' ;
+const password = process.env.MYSQL_PASSWORD || '';
 
 // Check if required parameters are provided
 if (!tableName) {
@@ -25,13 +25,9 @@ const mysqlConnection = mysql.createConnection({
   user: mysqlUser,
   database: mysqlDatabase,
   port: parseInt(mysqlPort),
-  password: password,
-  authPlugins: {
-    mysql_clear_password: () => () => Buffer.from(password + '\0')
-  }
+  password : ''
 });
 
-// Rest of your script remains the same...
 
 
 async function getTableSchema(tableName) {
@@ -52,54 +48,51 @@ async function getTableSchema(tableName) {
   });
 }
 
-function transferData() {
-  mysqlConnection.query(`SELECT * FROM ${tableName}`,
-    (error, results, fields) => {
+
+async function selectQuery() {
+  return new Promise((resolve, reject) => {
+    mysqlConnection.query(`SELECT * FROM ${tableName}`, (error, results, fields) => {
       if (error) {
         console.error("Error fetching data from MySQL:", error);
-        mysqlConnection.end();
-        sqliteDB.close();
-        return;
+        reject(error);
+      } else{
+        resolve(results);
       }
-      console.log(`tablename: ${tableName}, results: ${results}`);
-
-      results.forEach((row) => {
-        Object.keys(row).forEach((key) => {
-          console.log(`${key}: ${row[key]}`);
-        });
-        console.log("====================");
-      });
-      const headers = [];
-      Object.keys(results[0]).forEach((key) => {
-        headers.push(key);
-      });
-
-      results.forEach((row) => {
-        const stmt = sqliteDB.prepare(
-          `INSERT INTO ${tableName} (${headers[0]}, ${headers[1]}) VALUES (?, ?)`
-        );
-        stmt.run(row[headers[0]], row[headers[1]], (err) => {
-          if (err) {
-            console.error("Error inserting data into SQLite:", err);
-          }
-        });
-
-        stmt.finalize();
-      });
-
-      console.log("Data transfer completed.");
-
-      mysqlConnection.end();
-      sqliteDB.close();
-    }
-  );
+      
+    });
+  });
 }
+
+async function fillStrapiTable(dataRows) {
+  const headers = Object.keys(dataRows[0]); // Assuming dataRows is an array of objects
+
+  for (const row of dataRows) {
+    console.log("Inserting row:", row); // Debugging statement
+
+    const sqlStatement = `INSERT INTO ${tableName}s (${headers.join(", ")}) VALUES (${headers.map(() => '?').join(', ')})`;
+    console.log("SQL Statement:", sqlStatement); // Debugging statement
+
+    const stmt = sqliteDB.prepare(sqlStatement);
+    console.log("Prepared Statement:", stmt.sql); // Debugging statement
+    stmt.run(headers.map(header => row[header]) , (err) => {
+      if (err) {
+        console.error("Error inserting data into SQLite:", err);
+      } else {
+        console.log("Row inserted successfully."); // Debugging statement
+      }
+    });
+
+    stmt.finalize();
+  }
+
+  console.log("Data transfer to SQLite completed."); // Debugging statement
+}
+
+
 
 async function run() {
   try {
     const tableSchema = await getTableSchema(tableName);
-    console.log("Table schema:", tableSchema);
-    console.log(`table schema column:`);
     const customAttributes = tableSchema.columns.reduce((acc, column) => {
     acc[column.name] = { type: columnTypeToSQLiteType(column.type), required: true };
     console.log(`${column.name} ${columnTypeToSQLiteType(column.type)}`)
@@ -128,7 +121,7 @@ async function createTableInSQLite(tableName, columns) {
 
 
   const stmt = sqliteDB.prepare(
-    `CREATE TABLE IF NOT EXISTS ${tableName} (\`id\` integer PRIMARY KEY AUTOINCREMENT NOT NULL, ${columnDefinitionString}, \`created_at\` datetime NULL, \`updated_at\` datetime NULL, \`published_at\` datetime NULL, \`created_by_id\` integer NULL, \`updated_by_id\` integer NULL, CONSTRAINT \`${tableName}_created_by_id_fk\` FOREIGN KEY (\`created_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}_updated_by_id_fk\` FOREIGN KEY (\`updated_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}_created_by_id_fk\` FOREIGN KEY (\`created_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}_updated_by_id_fk\` FOREIGN KEY (\`updated_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL)`
+    `CREATE TABLE IF NOT EXISTS ${tableName}s (\`id\` integer PRIMARY KEY AUTOINCREMENT NOT NULL, ${columnDefinitionString}, \`created_at\` datetime NULL, \`updated_at\` datetime NULL, \`published_at\` datetime NULL, \`created_by_id\` integer NULL, \`updated_by_id\` integer NULL, CONSTRAINT \`${tableName}_created_by_id_fk\` FOREIGN KEY (\`created_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}_updated_by_id_fk\` FOREIGN KEY (\`updated_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}_created_by_id_fk\` FOREIGN KEY (\`created_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL, CONSTRAINT \`${tableName}_updated_by_id_fk\` FOREIGN KEY (\`updated_by_id\`) REFERENCES \`admin_users\` (\`id\`) ON DELETE SET NULL)`
   );
   stmt.run();
   stmt.finalize();
@@ -148,8 +141,11 @@ async function habraKdbra() {
   await createProjectFoldersAndFiles(tableName);
   await fillFiles(tableName);
   await updateJSONFile(tableName, customAttributes);
+  console.log("Invoking Transfer Data");
+  const dataRows = await selectQuery();
+  await fillStrapiTable(dataRows);
   process.exit();
 }
-habraKdbra()
+habraKdbra();
 
 //node Script.js localhost root myStrapi 3306 yup
